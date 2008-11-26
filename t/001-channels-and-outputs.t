@@ -1,8 +1,7 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use Test::More tests => 13;
-use Test::Deep;
+use Test::More tests => 15;
 use Log::Dispatch::Channels;
 use Log::Dispatch::Null;
 
@@ -27,12 +26,10 @@ for my $channel (1..3) {
 
 isa_ok($logger->channel('1')->output('all'), 'Log::Dispatch::Null');
 my $all_output = $logger->output('all');
-my $set = set();
 for my $channel (1..3) {
-    $set->add(shallow($logger->channel($channel)->output('all')));
+    is($all_output, $logger->channel($channel)->output('all'),
+       "output 'all' is shared with channel $channel");
 }
-cmp_deeply([$all_output], $set,
-           "output 'all' is shared between all channels");
 
 is($logger->channel('3')->output('one_and_two'), undef,
    "output 'one_and_two' isn't added to channel '3'");
