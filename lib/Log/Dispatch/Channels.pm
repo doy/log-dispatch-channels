@@ -17,7 +17,7 @@ sub new {
     return $self;
 }
 
-sub new_channel {
+sub add_channel {
     my $self = shift;
     my $channel = shift;
 
