@@ -125,6 +125,7 @@ sub output {
     my $output = shift;
 
     return $self->{outputs}{$output} if exists $self->{outputs}{$output};
+    return undef;
 }
 
 sub channel {
@@ -132,6 +133,7 @@ sub channel {
     my $channel = shift;
 
     return $self->{channels}{$channel} if exists $self->{channels}{$channel};
+    return undef;
 }
 
 1;
