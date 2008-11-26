@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use Test::More tests => 13;
 use Test::Deep;
+use Log::Dispatch::Channels;
+use Log::Dispatch::Null;
 
 my $logger = Log::Dispatch::Channels->new;
 for my $channel (1..3) {
