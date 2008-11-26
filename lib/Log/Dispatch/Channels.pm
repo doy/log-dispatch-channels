@@ -41,7 +41,12 @@ sub _forward_to_channels {
     # just wants a boolean
     my $ret = 0;
     for my $channel (@channels) {
-        $ret ||= $self->{channels}{$channel}->$method(@_);
+        if (exists $self->{channels}{$channel}) {
+            $ret ||= $self->{channels}{$channel}->$method(@_);
+        }
+        else {
+            carp "Channel $channel doesn't exist";
+        }
     }
     return $ret;
 }
