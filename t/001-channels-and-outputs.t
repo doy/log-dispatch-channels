@@ -3,28 +3,27 @@ use strict;
 use warnings;
 use Test::More tests => 13;
 use Test::Deep;
-use Log::Dispatch::ToString;
 
 my $logger = Log::Dispatch::Channels->new;
 for my $channel (1..3) {
     $logger->add_channel($channel);
-    $logger->add(Log::Dispatch::ToString->new(name => $channel,
+    $logger->add(Log::Dispatch::Null->new(name => $channel,
                                               min_level => 'debug'),
                  channels => $channel);
 }
 
-$logger->add(Log::Dispatch::ToString->new(name => 'all',
+$logger->add(Log::Dispatch::Null->new(name => 'all',
                                           min_level => 'debug'));
-$logger->add(Log::Dispatch::ToString->new(name => 'one_and_two',
+$logger->add(Log::Dispatch::Null->new(name => 'one_and_two',
                                           min_level => 'debug'),
              channels => [qw/1 2/]);
 
 for my $channel (1..3) {
     isa_ok($logger->channel($channel), 'Log::Dispatch');
-    isa_ok($logger->output($channel), 'Log::Dispatch::ToString');
+    isa_ok($logger->output($channel), 'Log::Dispatch::Null');
 }
 
-isa_ok($logger->channel('1')->output('all'), 'Log::Dispatch::ToString');
+isa_ok($logger->channel('1')->output('all'), 'Log::Dispatch::Null');
 my $all_output = $logger->output('all');
 my $set = set();
 for my $channel (1..3) {
