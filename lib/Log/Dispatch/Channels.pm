@@ -29,13 +29,18 @@ sub new_channel {
 
 sub _forward_to_channels {
     my $self = shift;
-    my $channels = shift || [keys %{ $self->{channels} }];
+    my $channels = shift;
     my $method = shift;
+    my @channels = !defined $channels
+                 ? [keys %{ $self->{channels} }]
+                 : ref $channels
+                 ? @$channels
+                 : ($channels);
 
     # XXX: sort of a hack - the return value is only used by would_log, which
     # just wants a boolean
     my $ret = 0;
-    for my $channel (@$channels) {
+    for my $channel (@channels) {
         $ret ||= $self->{channels}{$channel}->$method(@_);
     }
     return $ret;
