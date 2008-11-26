@@ -6,6 +6,14 @@ use warnings;
 use Log::Dispatch;
 use Carp;
 
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=method new
+
+=cut
+
 sub new {
     my $class = shift;
 
@@ -17,6 +25,10 @@ sub new {
     return $self;
 }
 
+=method add_channel
+
+=cut
+
 sub add_channel {
     my $self = shift;
     my $channel = shift;
@@ -26,6 +38,10 @@ sub add_channel {
 
     $self->{channels}{$channel} = Log::Dispatch->new(@_);
 }
+
+=method remove_channel
+
+=cut
 
 sub remove_channel {
     my $self = shift;
@@ -59,6 +75,10 @@ sub _forward_to_channels {
     return $ret;
 }
 
+=method add
+
+=cut
+
 sub add {
     my $self = shift;
     my $output = shift;
@@ -71,6 +91,10 @@ sub add {
     $self->{outputs}{$output->name} = $output;
 }
 
+=method remove
+
+=cut
+
 sub remove {
     my $self = shift;
     my $output = shift;
@@ -80,6 +104,10 @@ sub remove {
     return delete $self->{outputs}{$output};
 }
 
+=method log
+
+=cut
+
 sub log {
     my $self = shift;
     my %args = @_;
@@ -87,6 +115,10 @@ sub log {
 
     $self->_forward_to_channels($channels, 'log', %args);
 }
+
+=method log_and_die
+
+=cut
 
 sub log_and_die {
     my $self = shift;
@@ -96,6 +128,10 @@ sub log_and_die {
     $self->_forward_to_channels($channels, 'log_and_die', %args);
 }
 
+=method log_and_croak
+
+=cut
+
 sub log_and_croak {
     my $self = shift;
     my %args = @_;
@@ -104,6 +140,10 @@ sub log_and_croak {
     $self->_forward_to_channels($channels, 'log_and_croak', %args);
 }
 
+=method log_to
+
+=cut
+
 sub log_to {
     my $self = shift;
     my %args = @_;
@@ -111,6 +151,10 @@ sub log_to {
 
     $self->{outputs}{$output}->log(%args);
 }
+
+=method would_log
+
+=cut
 
 sub would_log {
     my $self = shift;
@@ -121,6 +165,10 @@ sub would_log {
     return $self->_forward_to_channels($channels, 'would_log', $level);
 }
 
+=method output
+
+=cut
+
 sub output {
     my $self = shift;
     my $output = shift;
@@ -128,6 +176,10 @@ sub output {
     return $self->{outputs}{$output} if exists $self->{outputs}{$output};
     return undef;
 }
+
+=method channel
+
+=cut
 
 sub channel {
     my $self = shift;
