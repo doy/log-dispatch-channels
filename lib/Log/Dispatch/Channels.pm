@@ -28,7 +28,7 @@ sub new_channel {
 
 sub _forward_to_channels {
     my $self = shift;
-    my $channels = shift || [keys $self->{channels}];
+    my $channels = shift || [keys %{ $self->{channels} }];
     my $method = shift;
 
     # XXX: sort of a hack - the return value is only used by would_log, which
