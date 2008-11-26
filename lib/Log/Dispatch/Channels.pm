@@ -27,6 +27,13 @@ sub new_channel {
     $self->{channels}{$channel} = Log::Dispatch->new(@_);
 }
 
+sub remove_channel {
+    my $self = shift;
+    my $channel = shift;
+
+    return delete $self->{channels}{$channel};
+}
+
 sub _forward_to_channels {
     my $self = shift;
     my $channels = shift;
