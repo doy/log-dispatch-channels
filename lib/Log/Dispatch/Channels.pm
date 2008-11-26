@@ -39,7 +39,7 @@ sub _forward_to_channels {
     my $channels = shift;
     my $method = shift;
     my @channels = !defined $channels
-                 ? [keys %{ $self->{channels} }]
+                 ? (keys %{ $self->{channels} })
                  : ref $channels
                  ? @$channels
                  : ($channels);
