@@ -1,10 +1,11 @@
 #!/usr/bin/perl
 package Log::Dispatch::Channels;
-# ABSTRACT: Adds separate logging channels to Log::Dispatch
 use strict;
 use warnings;
 use Log::Dispatch;
 use Carp;
+
+# ABSTRACT: Adds separate logging channels to Log::Dispatch
 
 =head1 SYNOPSIS
 
