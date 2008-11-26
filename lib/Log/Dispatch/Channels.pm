@@ -8,7 +8,36 @@ use Carp;
 
 =head1 SYNOPSIS
 
+    use Log::Dispatch::Channels;
+
+    my $logger = Log::Dispatch::Channels->new;
+    $logger->add_channel('foo');
+    my $timestamper = sub { my %p = @_; return time . $p{message}; };
+    $logger->add_channel('bar', callbacks => $timestamper);
+    $logger->add(Log::Dispatch::File->new(channels  => 'foo',
+                                          name      => 'foo',
+                                          min_level => 'debug',
+                                          filename  => 'foo.log'));
+    $logger->add(Log::Dispatch::Null->new(channels  => 'bar',
+                                          name      => 'bar',
+                                          min_level => 'debug'));
+    $logger->add(Log::Dispatch::File->new(channels  => [qw/foo bar/],
+                                          name      => 'errors',
+                                          min_level => 'error',
+                                          filename  => 'error.log'));
+    $logger->log(channels => 'foo', level => 'debug',
+                 message => 'For foo');
+    $logger->log(channels => 'bar', level => 'error',
+                 message => 'For bar and errors');
+
 =head1 DESCRIPTION
+
+This module manages a set of Log::Dispatch objects, treating them as separate
+message channels to which messages can be logged. These objects can share
+Log::Dispatch::Output objects, to allow for logging to multiple places
+simultaneously and automatically.
+
+=cut
 
 =method new
 
