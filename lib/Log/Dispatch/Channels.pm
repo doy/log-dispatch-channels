@@ -219,4 +219,14 @@ sub channel {
     return undef;
 }
 
+=head1 TODO
+
+Allow top level callbacks on the Log::Dispatcher::Channels object
+
+=head1 SEE ALSO
+
+L<Log::Dispatch>
+
+=cut
+
 1;
