@@ -4,4 +4,6 @@ use warnings;
 use Test::More tests => 1;
 
 use_ok 'Log::Dispatch::Channels';
+my $logger = Log::Dispatch::Channels->new;
+isa_ok $logger, 'Log::Dispatch::Channels';
 
