@@ -10,19 +10,19 @@ my $logger = Log::Dispatch::Channels->new;
 for my $channel (1..3) {
     $logger->add_channel($channel);
     $logger->add(Log::Dispatch::Null->new(name => $channel,
-                                              min_level => 'debug'),
+                                          min_level => 'debug'),
                  channels => $channel);
 }
 
 $logger->add(Log::Dispatch::Null->new(name => 'all',
-                                          min_level => 'debug'));
+                                      min_level => 'debug'));
 $logger->add(Log::Dispatch::Null->new(name => 'one_and_two',
-                                          min_level => 'debug'),
+                                      min_level => 'debug'),
              channels => [qw/1 2/]);
 
 for my $channel (1..3) {
     isa_ok($logger->channel($channel), 'Log::Dispatch');
-    isa_ok($logger->output($channel), 'Log::Dispatch::Null');
+    isa_ok($logger->output($channel),  'Log::Dispatch::Null');
 }
 
 isa_ok($logger->channel('1')->output('all'), 'Log::Dispatch::Null');
@@ -31,7 +31,8 @@ my $set = set();
 for my $channel (1..3) {
     $set->add(shallow($logger->channel($channel)->output('all')));
 }
-cmp_deeply([$all_output], $set, "output 'all' is shared between all channels");
+cmp_deeply([$all_output], $set,
+           "output 'all' is shared between all channels");
 
 is($logger->channel('3')->output('one_and_two'), undef,
    "output 'one_and_two' isn't added to channel '3'");
