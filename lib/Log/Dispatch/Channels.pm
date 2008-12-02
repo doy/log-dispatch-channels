@@ -57,9 +57,9 @@ sub new {
     return $self;
 }
 
-=method add_channel(I<$CHANNEL>, I<@ARGS>)
+=method add_channel(I<$NAME>, I<@ARGS>)
 
-Adds a new message channel named I<$CHANNEL>. This channel is actually a
+Adds a new message channel named I<$NAME>. This channel is actually a
 L<Log::Dispatch> object, and I<@ARGS> is forwarded on to the L<Log::Dispatch>
 constructor.
 
@@ -67,25 +67,25 @@ constructor.
 
 sub add_channel {
     my $self = shift;
-    my $channel = shift;
+    my $name = shift;
 
-    carp "Channel $channel already exists!"
-        if exists $self->{channels}{$channel};
+    carp "Channel $name already exists!"
+        if exists $self->{channels}{$name};
 
-    $self->{channels}{$channel} = Log::Dispatch->new(@_);
+    $self->{channels}{$name} = Log::Dispatch->new(@_);
 }
 
-=method remove_channel(I<$CHANNEL>)
+=method remove_channel(I<$NAME>)
 
-Removes the channel named I<$CHANNEL> and returns it.
+Removes the channel named I<$NAME> and returns it.
 
 =cut
 
 sub remove_channel {
     my $self = shift;
-    my $channel = shift;
+    my $name = shift;
 
-    return delete $self->{channels}{$channel};
+    return delete $self->{channels}{$name};
 }
 
 sub _forward_to_channels {
@@ -113,12 +113,12 @@ sub _forward_to_channels {
     return $ret;
 }
 
-=method add(I<$OUTPUT>[, channels => I<$CHANNELS>])
+=method add(I<$OUTPUT>[, channels => I<$NAMES>])
 
 Adds I<$OUTPUT> (which is a L<Log::Dispatch::Output> object), and also adds it
-to each of I<$CHANNELS>. I<$CHANNELS> can be a string specifying a single
-channel, an arrayref of strings specifying multiple channels, or left out to
-add the output to all channels (this applies for each function taking a
+to each channel named in I<$NAMES>. I<$NAMES> can be a string specifying a
+single channel, an arrayref of strings specifying multiple channels, or left
+out to add the output to all channels (this applies for each function taking a
 'channels' argument).
 
 =cut
@@ -135,26 +135,26 @@ sub add {
     $self->{outputs}{$output->name} = $output;
 }
 
-=method remove(I<$OUTPUT>)
+=method remove(I<$NAME>)
 
-Removes the output named I<$OUTPUT> from the object and from each of the
+Removes the output named I<$NAME> from the object and from each of the
 channels, and then returns it.
 
 =cut
 
 sub remove {
     my $self = shift;
-    my $output = shift;
+    my $name = shift;
     my %args = @_;
 
-    $self->_forward_to_channels(undef, 'remove', $output);
-    return delete $self->{outputs}{$output};
+    $self->_forward_to_channels(undef, 'remove', $name);
+    return delete $self->{outputs}{$name};
 }
 
-=method log([channels => I<$CHANNELS>,] I<%ARGS>)
+=method log([channels => I<$NAMES>,] I<%ARGS>)
 
 Forwards I<%ARGS> on to the L<log|Log::Dispatch/log> method of each channel
-listed in I<$CHANNELS>.
+listed in I<$NAMES>.
 
 =cut
 
@@ -166,10 +166,10 @@ sub log {
     $self->_forward_to_channels($channels, 'log', %args);
 }
 
-=method log_and_die([channels => I<$CHANNELS>,] I<%ARGS>)
+=method log_and_die([channels => I<$NAMES>,] I<%ARGS>)
 
 Forwards I<%ARGS> on to the L<log_and_die|Log::Dispatch/log_and_die> method of
-each channel listed in I<$CHANNELS>.
+each channel listed in I<$NAMES>.
 
 =cut
 
@@ -181,10 +181,10 @@ sub log_and_die {
     $self->_forward_to_channels($channels, 'log_and_die', %args);
 }
 
-=method log_and_croak([channels => I<$CHANNELS>,] I<%ARGS>)
+=method log_and_croak([channels => I<$NAMES>,] I<%ARGS>)
 
 Forwards I<%ARGS> on to the L<log_and_croak|Log::Dispatch/log_and_croak> method
-of each channel listed in I<$CHANNELS>.
+of each channel listed in I<$NAMES>.
 
 =cut
 
@@ -211,9 +211,9 @@ sub log_to {
     $self->{outputs}{$output}->log(%args);
 }
 
-=method would_log(I<$LEVEL>[, channels => I<$CHANNELS>])
+=method would_log(I<$LEVEL>[, channels => I<$NAMES>])
 
-Returns true if any channel listed in I<$CHANNELS> would log a message of level
+Returns true if any channel named in I<$NAMES> would log a message of level
 I<$LEVEL>.
 
 =cut
@@ -227,31 +227,31 @@ sub would_log {
     return $self->_forward_to_channels($channels, 'would_log', $level);
 }
 
-=method output(I<$OUTPUT>)
+=method output(I<$NAME>)
 
-Returns the L<Log::Dispatch::Output> object named I<$OUTPUT>.
+Returns the L<Log::Dispatch::Output> object named I<$NAME>.
 
 =cut
 
 sub output {
     my $self = shift;
-    my $output = shift;
+    my $name = shift;
 
-    return $self->{outputs}{$output} if exists $self->{outputs}{$output};
+    return $self->{outputs}{$name} if exists $self->{outputs}{$name};
     return undef;
 }
 
-=method channel(I<$CHANNEL>)
+=method channel(I<$NAME>)
 
-Returns the L<Log::Dispatch> object named I<$CHANNEL>.
+Returns the L<Log::Dispatch> object named I<$NAME>.
 
 =cut
 
 sub channel {
     my $self = shift;
-    my $channel = shift;
+    my $name = shift;
 
-    return $self->{channels}{$channel} if exists $self->{channels}{$channel};
+    return $self->{channels}{$name} if exists $self->{channels}{$name};
     return undef;
 }
 
