@@ -40,7 +40,9 @@ simultaneously and automatically.
 
 =cut
 
-=method new
+=method new()
+
+Returns a new Log::Dispatch::Channels object.
 
 =cut
 
@@ -55,7 +57,11 @@ sub new {
     return $self;
 }
 
-=method add_channel
+=method add_channel(I<$CHANNEL>, I<@ARGS>)
+
+Adds a new message channel named I<$CHANNEL>. This channel is actually a
+L<Log::Dispatch> object, and I<@ARGS> is forwarded on to the L<Log::Dispatch>
+constructor.
 
 =cut
 
@@ -69,7 +75,9 @@ sub add_channel {
     $self->{channels}{$channel} = Log::Dispatch->new(@_);
 }
 
-=method remove_channel
+=method remove_channel(I<$CHANNEL>)
+
+Removes the channel named I<$CHANNEL> and returns it.
 
 =cut
 
@@ -105,7 +113,13 @@ sub _forward_to_channels {
     return $ret;
 }
 
-=method add
+=method add(I<$OUTPUT>[, channels => I<$CHANNELS>])
+
+Adds I<$OUTPUT> (which is a L<Log::Dispatch::Output> object), and also adds it
+to each of I<$CHANNELS>. I<$CHANNELS> can be a string specifying a single
+channel, an arrayref of strings specifying multiple channels, or left out to
+add the output to all channels (this applies for each function taking a
+'channels' argument).
 
 =cut
 
@@ -121,7 +135,10 @@ sub add {
     $self->{outputs}{$output->name} = $output;
 }
 
-=method remove
+=method remove(I<$OUTPUT>)
+
+Removes the output named I<$OUTPUT> from the object and from each of the
+channels, and then returns it.
 
 =cut
 
@@ -134,7 +151,10 @@ sub remove {
     return delete $self->{outputs}{$output};
 }
 
-=method log
+=method log([channels => I<$CHANNELS>,] I<%ARGS>)
+
+Forwards I<%ARGS> on to the L<log|Log::Dispatch/log> method of each channel
+listed in I<$CHANNELS>.
 
 =cut
 
@@ -146,7 +166,10 @@ sub log {
     $self->_forward_to_channels($channels, 'log', %args);
 }
 
-=method log_and_die
+=method log_and_die([channels => I<$CHANNELS>,] I<%ARGS>)
+
+Forwards I<%ARGS> on to the L<log_and_die|Log::Dispatch/log_and_die> method of
+each channel listed in I<$CHANNELS>.
 
 =cut
 
@@ -158,7 +181,10 @@ sub log_and_die {
     $self->_forward_to_channels($channels, 'log_and_die', %args);
 }
 
-=method log_and_croak
+=method log_and_croak([channels => I<$CHANNELS>,] I<%ARGS>)
+
+Forwards I<%ARGS> on to the L<log_and_croak|Log::Dispatch/log_and_croak> method
+of each channel listed in I<$CHANNELS>.
 
 =cut
 
@@ -170,7 +196,10 @@ sub log_and_croak {
     $self->_forward_to_channels($channels, 'log_and_croak', %args);
 }
 
-=method log_to
+=method log_to(name => I<$NAME>, I<%ARGS>)
+
+Forwards I<%ARGS> on to the L<log|Log::Dispatch::Output/log> method
+of the output named I<$NAME>.
 
 =cut
 
@@ -182,7 +211,10 @@ sub log_to {
     $self->{outputs}{$output}->log(%args);
 }
 
-=method would_log
+=method would_log(I<$LEVEL>[, channels => I<$CHANNELS>])
+
+Returns true if any channel listed in I<$CHANNELS> would log a message of level
+I<$LEVEL>.
 
 =cut
 
@@ -195,7 +227,9 @@ sub would_log {
     return $self->_forward_to_channels($channels, 'would_log', $level);
 }
 
-=method output
+=method output(I<$OUTPUT>)
+
+Returns the L<Log::Dispatch::Output> object named I<$OUTPUT>.
 
 =cut
 
@@ -207,7 +241,9 @@ sub output {
     return undef;
 }
 
-=method channel
+=method channel(I<$CHANNEL>)
+
+Returns the L<Log::Dispatch> object named I<$CHANNEL>.
 
 =cut
 
