@@ -130,7 +130,7 @@ sub remove {
     my $output = shift;
     my %args = @_;
 
-    $self->_forward_to_channels($args{channels}, 'remove', $output);
+    $self->_forward_to_channels(undef, 'remove', $output);
     return delete $self->{outputs}{$output};
 }
 
