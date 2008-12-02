@@ -263,6 +263,42 @@ Allow top level callbacks on the Log::Dispatcher::Channels object
 
 L<Log::Dispatch>
 
+=head1 BUGS
+
+No known bugs.
+
+Please report any bugs through RT: email
+C<bug-log-dispatch-channels at rt.cpan.org>, or browse to
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Log-Dispatch-Channels>.
+
+=head1 SUPPORT
+
+You can find this documentation for this module with the perldoc command.
+
+    perldoc Log::Dispatch::Channels
+
+You can also look for information at:
+
+=over 4
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/Log-Dispatch-Channels>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/Log-Dispatch-Channels>
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Log-Dispatch-Channels>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/Log-Dispatch-Channels>
+
+=back
+
 =cut
 
 1;
