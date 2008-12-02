@@ -33,9 +33,9 @@ use Carp;
 
 =head1 DESCRIPTION
 
-This module manages a set of Log::Dispatch objects, treating them as separate
-message channels to which messages can be logged. These objects can share
-Log::Dispatch::Output objects, to allow for logging to multiple places
+This module manages a set of L<Log::Dispatch> objects, treating them as
+separate message channels to which messages can be logged. These objects can
+share L<Log::Dispatch::Output> objects, to allow for logging to multiple places
 simultaneously and automatically.
 
 =cut
