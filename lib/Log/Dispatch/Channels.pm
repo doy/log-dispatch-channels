@@ -238,7 +238,7 @@ sub output {
     my $name = shift;
 
     return $self->{outputs}{$name} if exists $self->{outputs}{$name};
-    return undef;
+    return;
 }
 
 =method channel(I<$NAME>)
@@ -252,7 +252,7 @@ sub channel {
     my $name = shift;
 
     return $self->{channels}{$name} if exists $self->{channels}{$name};
-    return undef;
+    return;
 }
 
 =head1 TODO
